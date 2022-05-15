@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
+@Entity
+@Table(name="users")
 public class User implements UserDetails {
 
     @Id
@@ -19,6 +21,9 @@ public class User implements UserDetails {
     private UserRole userRole;
     private boolean locked;
     private boolean enabled;
+
+    public User() {
+    }
 
     public User(String username, String password, UserRole userRole, boolean locked, boolean enabled) {
         this.username = username;
