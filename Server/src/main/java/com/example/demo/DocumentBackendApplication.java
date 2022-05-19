@@ -9,9 +9,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableMongoRepositories
 class DocumentBackendApplication {
-
-	@Autowired
-	DocumentRepository documentRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(DocumentBackendApplication.class, args);
 	}

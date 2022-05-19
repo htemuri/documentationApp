@@ -1,4 +1,4 @@
-package com.example.demo.user;
+package com.example.demo.scim.user;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,7 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -20,7 +19,6 @@ public class UserService implements UserDetailsService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() ->
@@ -29,11 +27,11 @@ public class UserService implements UserDetailsService {
 
     public void signUpUser(User user){
 
-        boolean userExists = userRepository.findByUsername(user.getUsername()).isPresent();
-
-        if (userExists) {
-            throw new IllegalStateException("Username already exists");
-        }
+//        boolean userExists = userRepository.findByUsername(user.getUsername()).isPresent();
+//
+//        if (userExists) {
+//            throw new IllegalStateException("Username already exists");
+//        }
 
         // TODO: encode and set the password, save user
 
@@ -45,6 +43,15 @@ public class UserService implements UserDetailsService {
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
+
+    public List<Object> findUsersInvokedByUser() {
+        return userRepository.getAllUsersInvokedByUser();
+    }
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        return null;
+//    }
 //    public Optional<User> findUserByUsername(String username){
 //        return userRepository.findByUsername(username);
 //    };

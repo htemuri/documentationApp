@@ -2,7 +2,6 @@ package com.example.demo.document.folder;
 
 import com.example.demo.document.DocumentRole;
 import com.example.demo.document.DocumentWrapper;
-import com.example.demo.user.User;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;

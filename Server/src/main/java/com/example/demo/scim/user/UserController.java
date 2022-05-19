@@ -1,4 +1,4 @@
-package com.example.demo.user;
+package com.example.demo.scim.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,12 @@ public class UserController {
     @GetMapping(path = "user")
     public List<User> getUsers() {
         return userService.findAllUsers();
+    }
+
+    @GetMapping(path = "users")
+    public List<Object> getUsersByUser() {
+
+        return userService.findUsersInvokedByUser();
     }
 
     @GetMapping(path = "user/{username}")

@@ -1,6 +1,6 @@
 package com.example.demo.security.config;
 
-import com.example.demo.user.UserService;
+import com.example.demo.scim.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
