@@ -2,6 +2,7 @@ package com.example.demo.scim.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,7 @@ public class UserController {
     }
 
     @GetMapping(path = "users")
-    public List<Object> getUsersByUser() {
-
+    public List<UserDetailsFromUser> getUsersByUser() {
         return userService.findUsersInvokedByUser();
     }
 

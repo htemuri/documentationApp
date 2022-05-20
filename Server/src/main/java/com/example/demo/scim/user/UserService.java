@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public List<Object> findUsersInvokedByUser() {
+    public List<UserDetailsFromUser> findUsersInvokedByUser() {
         return userRepository.getAllUsersInvokedByUser();
     }
 
