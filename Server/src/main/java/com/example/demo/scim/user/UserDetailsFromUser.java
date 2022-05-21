@@ -8,7 +8,6 @@ public class UserDetailsFromUser {
     private String firstName;
     private String lastName;
 
-
     public UserDetailsFromUser(Long id, String username, String firstName, String lastName) {
         this.id = id;
         this.username = username;
@@ -36,9 +35,6 @@ public class UserDetailsFromUser {
         return firstName;
     }
 
-    public int getLENGTH() {
-        return 4;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

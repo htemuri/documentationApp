@@ -1,12 +1,10 @@
 package com.example.demo.registration;
 
 import com.example.demo.scim.user.User;
-import com.example.demo.scim.user.UserRole;
+import com.example.demo.permissions.UserRole;
 import com.example.demo.scim.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RegistrationService {
@@ -27,7 +25,7 @@ public class RegistrationService {
                         request.getFirstName(),
                         request.getLastName(),
                         request.getEmail(),
-                        UserRole.CANVIEW,
+                        UserRole.USER,
                         false,
                         false,
                         true

@@ -2,11 +2,14 @@ package com.example.demo.scim.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.AuthorizationServiceException;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -18,24 +21,47 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "user")
-    public List<User> getUsers() {
-        return userService.findAllUsers();
+    @GetMapping(path = "me")
+    public User getSignedInUser(@AuthenticationPrincipal final User user) {
+        return user;
     }
 
     @GetMapping(path = "users")
-    public List<UserDetailsFromUser> getUsersByUser() {
-        return userService.findUsersInvokedByUser();
+    public List<Object> getUsersByUser(@AuthenticationPrincipal final User user) {
+        return userService.getUsers(user);
     }
 
-    @GetMapping(path = "user/{username}")
-    public ResponseEntity<UserDetails> getUserByUsername(@PathVariable String username) {
+
+    @RequestMapping(method = RequestMethod.GET, path = "users/{id}")
+    public Object getUserById(@AuthenticationPrincipal final User user, @PathVariable Long id) {
         try {
-            return new ResponseEntity<>(userService.loadUserByUsername(username),HttpStatus.OK);
+            return new ResponseEntity<>(userService.getUserById(user, id),HttpStatus.OK);
         } catch (
                 UsernameNotFoundException e
         ) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return e.getMessage();
         }
     }
+    @RequestMapping(method = RequestMethod.DELETE, path = "users/{id}")
+    public Object deleteUserById(@AuthenticationPrincipal final User user, @PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(userService.deleteUserByID(user, id),HttpStatus.OK);
+        } catch (UsernameNotFoundException usernameNotFoundException){
+            return usernameNotFoundException.getMessage();
+        } catch (AuthorizationServiceException authorizationServiceException) {
+            return HttpServletResponse.SC_UNAUTHORIZED;
+        }
+    }
+
+
+//    @GetMapping(path = "user/{username}")
+//    public ResponseEntity<UserDetails> getUserByUsername(@PathVariable String username) {
+//        try {
+//            return new ResponseEntity<>(userService.loadUserByUsername(username),HttpStatus.OK);
+//        } catch (
+//                UsernameNotFoundException e
+//        ) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }
+//    }
 }

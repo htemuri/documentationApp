@@ -1,16 +1,12 @@
 package com.example.demo.scim.user;
 
-import org.checkerframework.checker.nullness.Opt;
-import org.checkerframework.checker.units.qual.Length;
+import com.example.demo.permissions.UserRole;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +39,7 @@ class UserRepositoryTest {
                 "User1",
                 "LastName",
                 "usersemail@gmail.com",
-                UserRole.CANVIEW,
+                UserRole.USER,
                 false,
                 false,
                 true,
@@ -69,9 +65,8 @@ class UserRepositoryTest {
         String name = response.get().getFirstName();
         assertEquals(name, "Bob");
 
-        // test to see that output is only 4 fields
-        int numberOfVariables = response.get().getLENGTH();
-        assertEquals(numberOfVariables, 4);
+        // test to see that output is the correct type
+//        assertInstanceOf(response.get() instanceof UserDetailsFromUser);
     }
 
     @Test
@@ -90,9 +85,8 @@ class UserRepositoryTest {
         String name = response.get().getFirstName();
         assertEquals(name, "Bob");
 
-        // test to see that output is only 4 fields
-        int numberOfVariables = response.get().getLENGTH();
-        assertEquals(numberOfVariables, 9);
+        // test to see that output is the correct type
+//        assertInstanceOf(UserDetailsFromAdmin.class, response.getClass());
     }
 
     @Test
@@ -107,9 +101,8 @@ class UserRepositoryTest {
         String name = response.get(0).getFirstName();
         assertEquals(name, "Bob");
 
-        // test to see that output is only 4 fields
-        int numberOfVariables = response.get(0).getLENGTH();
-        assertEquals(numberOfVariables, 4);
+        // test to see that output is the correct type
+//        assertInstanceOf(UserDetailsFromUser.class, response.getClass());
     }
 
     @Test
@@ -124,9 +117,8 @@ class UserRepositoryTest {
         String name = response.get(0).getFirstName();
         assertEquals(name, "Bob");
 
-        // test to see that output is only 4 fields
-        int numberOfVariables = response.get(0).getLENGTH();
-        assertEquals(numberOfVariables, 9);
+        // test to see that output is the correct type
+//        assertInstanceOf(UserDetailsFromAdmin.class, response.getClass());
     }
 
 
