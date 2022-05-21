@@ -20,9 +20,9 @@ public interface UserRepositoryCustom {
     @Query("SELECT new com.example.demo.scim.user.UserDetailsFromAdmin("+sensitiveColumns+") FROM User u")
     List<UserDetailsFromAdmin> getAllUsersInvokedByAdmin();
     @Query("SELECT u FROM User u WHERE u.username = :username")
-    public User getUserByUsername(@Param("username") String username);
+    User getUserByUsername(@Param("username") String username);
 
     @Query("DELETE FROM User u WHERE u.id = :id")
     @Modifying
-    public Optional<Object> deleteUserByID(@Param("id") Long id);
+    Optional<Object> deleteUserByID(@Param("id") Long id);
 }
