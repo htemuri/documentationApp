@@ -4,6 +4,10 @@ server:
     include-binding-errors: always
 
 spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
   datasource:
     password: 123
     url: jdbc:postgresql://localhost:5432/postgres
