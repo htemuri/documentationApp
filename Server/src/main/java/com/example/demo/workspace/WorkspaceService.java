@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.ne;
 
 @Service
 public class WorkspaceService {
@@ -30,21 +30,25 @@ public class WorkspaceService {
         ArrayList<String> newPaths = new ArrayList<>(Arrays.asList(paths));
         if (Objects.equals(paths[0], "")) {
             newPaths.remove(0);
-            System.out.println(newPaths);
         }
-        StringBuilder parents = new StringBuilder();
-        for (String s : newPaths) {
-            parents.append("/").append(s);
-            PathRequest newDir = new PathRequest(parents.toString());
-            workspaceRepository.save(new WorkspaceObject(
-                    parents.toString()+"/",
+
+        ArrayList<List> paths1 = new ArrayList<>();
+        for (int i=newPaths.size()-1;i>=0;i--) {
+            paths1.add(newPaths.subList(0,i+1));
+        }
+        for (int i=0;i<paths1.size();i++) {
+            StringBuilder s = new StringBuilder("/");
+            for (int j=0; j<paths1.get(i).size(); j++) {
+                String x = (String) paths1.get(i).get(j);
+                s.append(x).append("/");
+            }
+            if (!checkIfPathExists(s.toString())) {
+                workspaceRepository.save(new WorkspaceObject(
+                    s.toString(),
                     WorkspaceRole.DIRECTORY
             ));
+            }
         }
-
-        // TODO: take the path, convert to array delimited by '/', check  pop out top ele
-
-
 
     }
 
@@ -68,23 +72,29 @@ public class WorkspaceService {
     }
 
     public void removeAllDocuments() {
-        String[] paths = "/1/2/3/".split("\\/");
-        ArrayList<String> newPaths = new ArrayList<>(Arrays.asList(paths));
-        if (Objects.equals(paths[0], "")) {
-            newPaths.remove(0);
-            System.out.println(newPaths);
-        }
-//        System.out.println(Arrays.toString(newPaths));
-
-        StringBuilder parents = new StringBuilder();
-        for (String s : newPaths) {
-            parents.append("/").append(s);
-            System.out.println(parents);
-        }
-
         workspaceRepository.deleteAll();
     }
 
+    public boolean checkIfPathExists(String path) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("path").is(path));
+        return !mongoTemplate.find(query, WorkspaceObject.class).isEmpty();
+    }
+
+    public void deleteByPath(PathRequest pathRequest) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("path").is(pathRequest.getPath()));
+
+        char[] chars = pathRequest.getPath().toCharArray();
+
+        if (listByPath(pathRequest).isEmpty()) {
+            WorkspaceObject needToDelete =  mongoTemplate.findOne(query, WorkspaceObject.class);
+//            assert needToDelete != null;
+            workspaceRepository.delete(needToDelete);
+        } else {
+            throw new IllegalStateException("That directory has children!");
+        }
+    }
 //    public List<Object> listByPath(PathRequest path) {
 //        return Collections.singletonList(workspaceRepository.find(eq("path", Document.parse("{path: 1}"))));
 //    }

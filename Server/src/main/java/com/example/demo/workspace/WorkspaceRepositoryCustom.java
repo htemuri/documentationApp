@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface WorkspaceRepositoryCustom {
     @Query("find({ path : { $regex: ?0 } })")
-    List<WorkspaceObject> findObjectsByPath(String path);
+    WorkspaceObject findObjectsByPath(String path);
+
+
 }

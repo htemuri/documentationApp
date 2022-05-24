@@ -1,6 +1,7 @@
 package com.example.demo.workspace;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
@@ -27,9 +28,19 @@ public class WorkspaceController {
     public List<Object> listByPath(@RequestBody PathRequest path) {
         return Collections.singletonList(workspaceService.listByPath(path));
     }
-
-    @GetMapping(path = "delete")
+    @GetMapping(path = "deleteAll")
     public void deleteAll() {
         workspaceService.removeAllDocuments();
     }
+
+    @PostMapping(path = "delete")
+    public String delete(@RequestBody PathRequest pathRequest) {
+        try {
+            workspaceService.deleteByPath(pathRequest);
+            return "deleted";
+        } catch (IllegalStateException e) {
+            return e.getMessage();
+        }
+    }
+
 }
