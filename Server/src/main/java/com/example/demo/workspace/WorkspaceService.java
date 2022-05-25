@@ -1,18 +1,18 @@
 package com.example.demo.workspace;
 
+import com.example.demo.workspace.document.DocumentObject;
 import com.example.demo.workspace.workspaceobject.WorkspaceObject;
 import com.example.demo.workspace.workspaceobject.WorkspaceRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
 import java.util.*;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.ne;
 
 @Service
 public class WorkspaceService {
@@ -22,6 +22,19 @@ public class WorkspaceService {
     private WorkspaceRepository workspaceRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
+
+
+    // format path in PathRequest
+    public String pathFormat(String pathRequest) {
+
+        char[] chars = pathRequest.toCharArray();
+
+        if (chars[chars.length - 1] == '/') {
+            return pathRequest;
+        } else {
+            return (pathRequest+"/");
+        }
+    }
 
     // make a directory
     public void makeDirectory(PathRequest path) {
@@ -58,14 +71,12 @@ public class WorkspaceService {
     }
 
     public List<WorkspaceObject> listByPath(PathRequest pathRequest) {
-        Query query = new Query();
-        char[] chars = pathRequest.getPath().toCharArray();
 
-        if (chars[chars.length - 1] == '/') {
-            query.addCriteria(Criteria.where("path").regex(pathRequest.getPath() + "[^\\/]+\\/$"));
-        } else {
-            query.addCriteria(Criteria.where("path").regex(pathRequest.getPath() + "\\/[^\\/]+\\/$"));
-        }
+        String formattedPath = pathFormat(pathRequest.getPath());
+
+        Query query = new Query();
+
+        query.addCriteria(Criteria.where("path").regex(formattedPath + "[^\\/]+\\/$"));
 
         List<WorkspaceObject> result = mongoTemplate.find(query, WorkspaceObject.class);
         return result;
@@ -77,25 +88,61 @@ public class WorkspaceService {
 
     public boolean checkIfPathExists(String path) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("path").is(path));
-        return !mongoTemplate.find(query, WorkspaceObject.class).isEmpty();
-    }
+
+        String formattedPath = pathFormat(path);
+
+        query.addCriteria(Criteria.where("path").is(formattedPath));
+        if (mongoTemplate.find(query, WorkspaceObject.class).isEmpty() && mongoTemplate.find(query, DocumentObject.class).isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }    }
 
     public void deleteByPath(PathRequest pathRequest) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("path").is(pathRequest.getPath()));
 
-        char[] chars = pathRequest.getPath().toCharArray();
+        String formattedPath = pathFormat(pathRequest.getPath());
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("path").is(formattedPath));
 
         if (listByPath(pathRequest).isEmpty()) {
             WorkspaceObject needToDelete =  mongoTemplate.findOne(query, WorkspaceObject.class);
-//            assert needToDelete != null;
             workspaceRepository.delete(needToDelete);
+        } else if (!checkIfPathExists(formattedPath)){
+            throw new NullPointerException("That path does not exist!");
         } else {
             throw new IllegalStateException("That directory has children!");
         }
     }
-//    public List<Object> listByPath(PathRequest path) {
-//        return Collections.singletonList(workspaceRepository.find(eq("path", Document.parse("{path: 1}"))));
-//    }
+
+    public WorkspaceObject getPathStatus(PathRequest pathRequest) {
+
+        boolean exists = checkIfPathExists(pathRequest.getPath());
+        if (exists) {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("path").is(pathFormat(pathRequest.getPath())));
+            return mongoTemplate.findOne(query, WorkspaceObject.class);
+        } else {
+            throw new NullPointerException("That path does not exist!");
+        }
+    }
+
+    // save a file!!!
+    public String saveDocument(DocumentRequest documentRequest) throws Exception {
+        // check if the path already exists:
+        boolean exists = checkIfPathExists(documentRequest.getPath());
+        if (exists && !documentRequest.isOverwrite()) {
+            throw new Exception("This path already exists. If you would like to overwrite it, please include that in your request!");
+        } else {
+            workspaceRepository.save(
+                    new DocumentObject(
+                            documentRequest.getPath(),
+                            documentRequest.getContent(),
+                            documentRequest.getDocumentFormat()
+                    )
+            );
+            return "document saved!";
+        }
+    }
+
 }
