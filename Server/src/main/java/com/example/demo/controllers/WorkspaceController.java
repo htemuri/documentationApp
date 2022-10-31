@@ -1,10 +1,11 @@
-package com.example.demo.workspace;
+package com.example.demo.controllers;
 
-import com.example.demo.workspace.workspaceobject.WorkspaceObject;
+import com.example.demo.service.WorkspaceService;
+import com.example.demo.workspace.requests.DocumentRequest;
+import com.example.demo.workspace.requests.PathRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,6 +59,15 @@ public class WorkspaceController {
             return workspaceService.saveDocument(documentRequest);
         } catch (Exception e) {
             return e.getMessage();
+        }
+    }
+
+    @GetMapping(path = "export")
+    public String exportDoc(@RequestBody PathRequest pathRequest) {
+        try {
+            return workspaceService.exportDocument(pathRequest);
+        } catch (NullPointerException nullPointerException) {
+            return nullPointerException.getMessage();
         }
     }
 

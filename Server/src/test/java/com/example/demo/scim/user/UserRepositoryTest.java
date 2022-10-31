@@ -1,6 +1,6 @@
 package com.example.demo.scim.user;
 
-import com.example.demo.permissions.UserRole;
+import com.example.demo.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

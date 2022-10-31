@@ -1,16 +1,17 @@
-package com.example.demo.workspace;
+package com.example.demo.service;
 
-import com.example.demo.workspace.document.DocumentObject;
-import com.example.demo.workspace.workspaceobject.WorkspaceObject;
+import com.example.demo.workspace.WorkspaceRepository;
+import com.example.demo.entities.DocumentObject;
+import com.example.demo.workspace.requests.DocumentRequest;
+import com.example.demo.workspace.requests.PathRequest;
+import com.example.demo.entities.WorkspaceObject;
 import com.example.demo.workspace.workspaceobject.WorkspaceRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Path;
 import java.util.*;
 
 
@@ -143,6 +144,15 @@ public class WorkspaceService {
             );
             return "document saved!";
         }
+    }
+
+    public String exportDocument(PathRequest pathRequest) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("path").is(pathRequest.getPath()));
+
+        DocumentObject object = mongoTemplate.findOne(query, DocumentObject.class);
+
+        return object.getContent();
     }
 
 }

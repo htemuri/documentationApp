@@ -1,6 +1,8 @@
-package com.example.demo.scim.group;
+package com.example.demo.service;
 
-import com.example.demo.scim.user.User;
+import com.example.demo.entities.Group;
+import com.example.demo.scim.group.GroupRepository;
+import com.example.demo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

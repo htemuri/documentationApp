@@ -1,6 +1,8 @@
-package com.example.demo.registration;
+package com.example.demo.controllers;
 
 
+import com.example.demo.registration.RegistrationRequest;
+import com.example.demo.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

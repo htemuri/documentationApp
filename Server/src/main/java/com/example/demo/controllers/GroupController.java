@@ -1,12 +1,12 @@
-package com.example.demo.scim.group;
+package com.example.demo.controllers;
 
-import com.example.demo.scim.user.User;
+import com.example.demo.entities.Group;
+import com.example.demo.service.GroupService;
+import com.example.demo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AuthorizationServiceException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.example.demo.scim.group;
+package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.util.ArrayList;

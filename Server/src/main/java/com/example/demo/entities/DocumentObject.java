@@ -1,10 +1,8 @@
-package com.example.demo.workspace.document;
+package com.example.demo.entities;
 
-import com.example.demo.workspace.workspaceobject.WorkspaceObject;
+import com.example.demo.workspace.document.DocumentFormat;
 import com.example.demo.workspace.workspaceobject.WorkspaceRole;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.persistence.Id;
 
 @Document("files")
 public class DocumentObject extends WorkspaceObject {

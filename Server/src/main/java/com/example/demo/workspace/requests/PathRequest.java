@@ -1,4 +1,4 @@
-package com.example.demo.workspace;
+package com.example.demo.workspace.requests;
 
 public class PathRequest {
     private String path;

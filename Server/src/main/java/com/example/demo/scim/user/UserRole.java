@@ -1,4 +1,4 @@
-package com.example.demo.permissions;
+package com.example.demo.scim.user;
 
 public enum UserRole {
     USER,

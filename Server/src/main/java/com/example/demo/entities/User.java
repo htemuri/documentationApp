@@ -1,7 +1,6 @@
-package com.example.demo.scim.user;
+package com.example.demo.entities;
 
-import com.example.demo.permissions.Roles;
-import com.example.demo.permissions.UserRole;
+import com.example.demo.scim.user.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

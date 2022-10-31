@@ -1,8 +1,8 @@
-package com.example.demo.registration;
+package com.example.demo.service;
 
-import com.example.demo.scim.user.User;
-import com.example.demo.permissions.UserRole;
-import com.example.demo.scim.user.UserService;
+import com.example.demo.registration.RegistrationRequest;
+import com.example.demo.entities.User;
+import com.example.demo.scim.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

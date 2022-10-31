@@ -1,7 +1,5 @@
 package com.example.demo.scim.user;
 
-import com.example.demo.permissions.UserRole;
-
 import java.util.Objects;
 
 public class UserDetailsFromAdmin {

@@ -1,5 +1,6 @@
-package com.example.demo.workspace.workspaceobject;
+package com.example.demo.entities;
 
+import com.example.demo.workspace.workspaceobject.WorkspaceRole;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;

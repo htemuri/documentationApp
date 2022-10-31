@@ -1,4 +1,4 @@
-package com.example.demo.workspace;
+package com.example.demo.workspace.requests;
 
 import com.example.demo.workspace.document.DocumentFormat;
 

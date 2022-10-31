@@ -1,5 +1,6 @@
 package com.example.demo.scim.group;
 
+import com.example.demo.entities.Group;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
